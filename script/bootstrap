@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+script/setup-mac-ip-loopback
