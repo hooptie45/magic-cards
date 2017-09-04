@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+set -eo pipefail
+
+docker volume ls  | grep postgres_db  || docker volume create --name=postgres_db
+docker volume ls  | grep website-sync || docker volume create --name=website-sync
+docker volume ls  | grep sidekiq-sync || docker volume create --name=sidekiq-sync
+docker volume ls  | grep cable-sync   || docker volume create --name=cable-sync
+docker network ls | grep backend      || docker network create  -d bridge backend
+docker network ls | grep frontend     || docker network create -d bridge frontend
+
+
+script/docker/run run --rm website bundle exec rake db:reset db:seed
+

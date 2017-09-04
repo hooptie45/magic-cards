@@ -1,0 +1,27 @@
+version: "2"
+options:
+  verbose: true
+syncs:
+  website-sync: &sync
+    src: '~/Projects/magic-card'
+    notify_terminal: true
+    sync_excludes:
+      - Name .docker-sync
+      - Name log
+      - 'Regex .*\.log'
+      - 'Regex \.#.*'
+    sync_excludes_type: none
+    watch_excludes:
+      - Name .docker-sync
+      - Name log
+      - 'Regex .*\.log'
+      - 'Regex .#.*'
+    watch_excludes_type: none
+
+  cable-sync:
+    src: '~/Projects/magic-card'
+    <<: *sync
+
+  sidekiq-sync:
+    src: '~/Projects/magic-card'
+    <<: *sync

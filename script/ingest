@@ -1,0 +1,142 @@
+#!/usr/bin/env sh
+
+HEADERS="-H 'Origin: http://ct-magefree.rhcloud.com'-H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en-US,en;q=0.8,pl;q=0.6' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36' -H 'Content-Type: application/json; charset=UTF-8' -H 'Accept: application/json, text/javascript, */*; q=0.01'"
+
+fetchPage() {
+    if ! [ -f "data/xmage/$1.json" ]; then
+        curl 'http://ct-magefree.rhcloud.com/cards/load' \
+         -H 'Origin: http://ct-magefree.rhcloud.com' \
+         -H 'Accept-Encoding: gzip, deflate' \
+         -H 'Accept-Language: en-US,en;q=0.8,pl;q=0.6' \
+         -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36' \
+         -H 'Content-Type: application/json; charset=UTF-8' \
+         -H 'Accept: application/json, text/javascript, */*; q=0.01' \
+         -H 'Referer: http://ct-magefree.rhcloud.com/cards' \
+         -H 'X-Requested-With: XMLHttpRequest' \
+         -H 'Connection: keep-alive' \
+         --data-binary "{\"page\":$1,\"rows\":100}" --compressed > "data/xmage/$1.json"
+    fi
+}
+
+fetchPage   0
+fetchPage   1
+fetchPage   2
+fetchPage   3
+fetchPage   4
+fetchPage   5
+fetchPage   6
+fetchPage   7
+fetchPage   8
+fetchPage   9
+fetchPage  10
+fetchPage  11
+fetchPage  12
+fetchPage  13
+fetchPage  14
+fetchPage  15
+fetchPage  16
+fetchPage  17
+fetchPage  18
+fetchPage  19
+fetchPage  20
+fetchPage  21
+fetchPage  22
+fetchPage  23
+fetchPage  24
+fetchPage  25
+fetchPage  26
+fetchPage  27
+fetchPage  28
+fetchPage  29
+fetchPage  30
+fetchPage  31
+fetchPage  32
+fetchPage  33
+fetchPage  34
+fetchPage  35
+fetchPage  36
+fetchPage  37
+fetchPage  38
+fetchPage  39
+fetchPage  40
+fetchPage  41
+fetchPage  42
+fetchPage  43
+fetchPage  44
+fetchPage  45
+fetchPage  46
+fetchPage  47
+fetchPage  48
+fetchPage  49
+fetchPage  50
+fetchPage  51
+fetchPage  52
+fetchPage  53
+fetchPage  54
+fetchPage  55
+fetchPage  56
+fetchPage  57
+fetchPage  58
+fetchPage  59
+fetchPage  60
+fetchPage  61
+fetchPage  62
+fetchPage  63
+fetchPage  64
+fetchPage  65
+fetchPage  66
+fetchPage  67
+fetchPage  68
+fetchPage  69
+fetchPage  70
+fetchPage  71
+fetchPage  72
+fetchPage  73
+fetchPage  74
+fetchPage  75
+fetchPage  76
+fetchPage  77
+fetchPage  78
+fetchPage  79
+fetchPage  80
+fetchPage  81
+fetchPage  82
+fetchPage  83
+fetchPage  84
+fetchPage  85
+fetchPage  86
+fetchPage  87
+fetchPage  88
+fetchPage  89
+fetchPage  90
+fetchPage  91
+fetchPage  92
+fetchPage  93
+fetchPage  94
+fetchPage  95
+fetchPage  96
+fetchPage  97
+fetchPage  98
+fetchPage  99
+fetchPage 100
+fetchPage 101
+fetchPage 102
+fetchPage 103
+fetchPage 104
+fetchPage 105
+fetchPage 106
+fetchPage 107
+fetchPage 108
+fetchPage 109
+fetchPage 110
+fetchPage 111
+fetchPage 112
+fetchPage 113
+fetchPage 114
+fetchPage 115
+fetchPage 116
+fetchPage 117
+
+script/update
+bundle exec rake db:seed
+

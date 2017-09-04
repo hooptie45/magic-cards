@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+set -eo pipefail
+
+script/docker/update
+script/docker/run exec website bundle exec rails c
+
+

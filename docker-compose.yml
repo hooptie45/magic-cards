@@ -1,59 +1,59 @@
 version: '2'
 
 services:
-  postgres:
-    image: 'postgres:9.6-alpine'
-    environment:
-      POSTGRES_USER: 'magic_cards'
-      POSTGRES_PASSWORD: 'yourpassword'
-    ports:
-      - '5432:5432'
-    volumes:
-      - 'postgres:/var/lib/postgresql/data'
-
-  redis:
-    image: 'redis:3.2-alpine'
-    command: redis-server --requirepass yourpassword
-    ports:
-      - '6379:6379'
-    volumes:
-      - 'redis:/data'
-
-  website:
-    depends_on:
-      - 'postgres'
-      - 'redis'
-    build: .
-    ports:
-      - '3000:3000'
-    volumes:
-      - '.:/app'
-    env_file:
-      - '.env'
 
   sidekiq:
-    depends_on:
-      - 'postgres'
-      - 'redis'
-    build: .
-    command: sidekiq -C config/sidekiq.yml.erb
+    image: magic-cards:dev
+    networks:
+      - backend
+      - default
+    external_links:
+      - postgres:postgres
+      - redis:redis
+    command: script/sidekiq
     volumes:
-      - '.:/app'
+      - 'sidekiq-sync:/app:nocopy'
     env_file:
       - '.env'
+  website:
+    image: magic-cards:dev
+    networks:
+      - backend
+      - default
+    external_links:
+      - postgres:postgres
+      - redis:redis
+    command: script/server
+    volumes:
+      - 'website-sync:/app:nocopy'
+    ports:
+      - '3000:3000'
 
   cable:
-    depends_on:
-      - 'redis'
-    build: .
-    command: puma -p 28080 cable/config.ru
+    image: magic-cards:dev
+    networks:
+      - backend
+      - default
+    external_links:
+      - postgres:postgres
+      - redis:redis
+    command: script/cable
+    image: magic-cards:dev
     ports:
       - '28080:28080'
     volumes:
-      - '.:/app'
-    env_file:
-      - '.env'
+      - 'cable-sync:/app:nocopy'
 
 volumes:
-  redis:
-  postgres:
+  bundle:
+  website-sync: &sync
+    external: true
+  cable-sync: *sync
+  sidekiq-sync: *sync
+
+networks:
+  default:
+    external:
+      name: frontend
+  backend:
+    external: true

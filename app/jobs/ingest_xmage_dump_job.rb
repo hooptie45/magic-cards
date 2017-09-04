@@ -1,3 +1,5 @@
+require 'hashie'
+
 # {
 #     "cardId": "Submerged_BoneyardAether_RevoltfalseNM-M",
 #     "name": "Submerged Boneyard",
@@ -48,11 +50,39 @@
 #      ],
 #      "otherSide": null
 #    },
-class IngestMagicCardJob < ApplicationJob
+# IngestXmageDumpJob.perform_now("./db/xmage_cards.json")
+class IngestXmageDumpJob < ApplicationJob
   queue_as :default
 
-  def perform(raw_card_json)
-    
+  def perform(pathname)
+    expansions_cache = {}
+    Pathname(pathname).open do |f|
+      json = JSON.load(f.read)
+
+      json['rowsData'].each_with_index do |raw_hash, index|
+        hash = Hashie::Mash.new(raw_hash)
+        card = Card.create(
+          name: hash.name,
+          card_type: hash.type,
+          card_sub_type: hash.subType,
+          xmage_card_id: hash.id,
+          power: hash.power,
+          toughness:  hash.toughness,
+          cost: hash.cost,
+          abilities: String(hash.abilities).split("$")
+        )
+
+        card.expansion_cards = hash.editions.map {|edition|
+          code = edition.expansionCode
+          expansion = expansions_cache[code] || ExpansionSet.where(code: edition.expansionCode).first_or_create(name: edition.expansionName)
+          ExpansionCard.new(expansion_set: expansion, rarity: edition.rarity, card_number: edition.cardNumber)
+        }
+        card.save
+      end
+
+      expansions_cache
+    end
+    # Do something later
   end
 end
 

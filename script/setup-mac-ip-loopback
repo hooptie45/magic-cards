@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 ### Docker containers that wish to access services running on the host (this mac)
 ### need a known IP address for the lo0 interface, 127.0.0.1 will not work.
@@ -21,7 +21,7 @@ else
   sudo /sbin/ifconfig lo0 alias ${ALIAS_IP}
   NAME=co.cozy.add-lo0-alias-for-docker
   FILE="${NAME}.plist"
-  DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  DIR=./script
 
   tee $DIR/$FILE <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
@@ -42,6 +42,8 @@ else
 </dict>
 </plist>
 PLIST
+
+
   sudo cp ${DIR}/${FILE} /Library/LaunchDaemons/
 
   sudo chown root:wheel /Library/LaunchDaemons/$FILE

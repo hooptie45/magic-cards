@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+set -eo pipefail
+
+script/docker/run run --rm website script/update
+script/docker/bootstrap
+
+

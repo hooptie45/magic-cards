@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+docker build \
+       --no-cache \
+       -t magic-cards:dev \
+       -f script/docker/Dockerfile .
+script/docker/run up --build --force-recreate -d
+script/docker/run down
+

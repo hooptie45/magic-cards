@@ -19,20 +19,13 @@ gem 'jbuilder', '~> 2.5'
 
 # Use PostgreSQL as the database for Active Record
 gem 'pg', '~> 0.21'
-
+gem 'faraday'
 # Use Redis Rails to set up a Redis backed Cache and / or Session
 gem 'redis-rails', '~> 5.0'
 
 # Use Sidekiq as a background job processor through Active Job
 gem 'sidekiq', '~> 5.0'
-
-# Use Clockwork for recurring background tasks without needing cron
-# gem 'clockwork', '~> 2.0'
-
-# Use Kaminari for pagination
-# gem 'kaminari', '~> 0.17'
-
-# Use SCSS for stylesheets
+gem 'hashie'
 gem 'sass-rails', '~> 5.0'
 
 # Use Uglifier as the compressor for JavaScript assets
@@ -50,17 +43,23 @@ gem 'bootstrap-sass', '~> 3.3'
 # Use Font Awesome Rails for Font Awesome icons
 gem 'font-awesome-rails', '~> 4.7'
 gem 'haml'
+gem 'ruby-kafka'
+gem 'graphql'
+gem 'graphql-batch'
 
 group :test do
-  gem 'rspec-rails'
   gem 'guard'
   gem 'guard-rspec'
 end
 
 group :development, :test do
   # Call 'byebug' anywhere in your code to drop into a debugger console
+  gem 'rspec'
+  gem 'rspec-its'
+  gem 'rspec-rails'
   gem 'byebug', platform: :mri
   gem 'pry'
+  gem 'pry-rails'
   # End to end testing of your rails apps (Rails 5.1+ supports this)
   # gem 'capybara', '~> 2.13'
   # gem 'selenium-webdriver'

@@ -7,7 +7,7 @@ class CreateCards < ActiveRecord::Migration[5.1]
         t.string :line
         t.string :filename
         t.string :git_sha
-        t.string :sourceable_id
+        t.integer :sourceable_id
         t.string :sourceable_type
         t.datetime :deleted_at
         t.index [:sourceable_id, :sourceable_type]
@@ -23,15 +23,25 @@ class CreateCards < ActiveRecord::Migration[5.1]
         t.timestamps
       end
 
+      create_table :mana_types do |t|
+        t.string :name, :null => false
+        t.string :code, :index => true, :null => false
+      end
+
+      create_table :manas do |t|
+        t.belongs_to :mana_type, index: true, foreign_key: true
+        t.references :mana_target, polymorphic: true, index: true
+      end
+
       create_table :cards do |t|
         t.string :name, :index => true
         t.string :mtg_card_id, :index => true
         t.string :xmage_card_id, :index => true
         t.string :color
         t.string :cost
-        t.string :mana, array: true, default: []
-        t.string :type
-        t.string :sub_type
+        t.json :mana, default: '{}'
+        t.string :card_type
+        t.string :card_sub_type
         t.integer :power, :index => true
         t.integer :toughness, :index => true
         t.string :abilities, array: true, default: []
@@ -47,8 +57,9 @@ class CreateCards < ActiveRecord::Migration[5.1]
         t.belongs_to :expansion_set, foreign_key: true, index: true
         t.belongs_to :card, foreign_key: true, index: true
         t.string :rarity
-        t.string :card_number
+        t.integer :card_number
         t.datetime :deleted_at
+        t.index [:expansion_set_id, :card_number, :card_id], :name => :index_expansion_cards_on_card_number
         t.timestamps
       end
 

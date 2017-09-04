@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+set -eo pipefail
+
+script/update
+
+puma -C config/puma.rb

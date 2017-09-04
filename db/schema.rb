@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170903065810) do
+ActiveRecord::Schema.define(version: 20170903233233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,9 +45,9 @@ ActiveRecord::Schema.define(version: 20170903065810) do
     t.string "xmage_card_id"
     t.string "color"
     t.string "cost"
-    t.string "mana", default: [], array: true
-    t.string "type"
-    t.string "sub_type"
+    t.json "mana", default: "{}"
+    t.string "card_type"
+    t.string "card_sub_type"
     t.integer "power"
     t.integer "toughness"
     t.string "abilities", default: [], array: true
@@ -69,11 +69,12 @@ ActiveRecord::Schema.define(version: 20170903065810) do
     t.bigint "expansion_set_id"
     t.bigint "card_id"
     t.string "rarity"
-    t.string "card_number"
+    t.integer "card_number"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_id"], name: "index_expansion_cards_on_card_id"
+    t.index ["expansion_set_id", "card_number", "card_id"], name: "index_expansion_cards_on_card_number"
     t.index ["expansion_set_id"], name: "index_expansion_cards_on_expansion_set_id"
   end
 
@@ -86,12 +87,47 @@ ActiveRecord::Schema.define(version: 20170903065810) do
     t.index ["code", "name"], name: "index_expansion_sets_on_code_and_name", unique: true
   end
 
+  create_table "mana_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "code", null: false
+    t.index ["code"], name: "index_mana_types_on_code"
+  end
+
+  create_table "manas", force: :cascade do |t|
+    t.bigint "mana_type_id"
+    t.string "mana_targetable_type"
+    t.bigint "mana_targetable_id"
+    t.index ["mana_targetable_type", "mana_targetable_id"], name: "index_manas_on_mana_targetable_type_and_mana_targetable_id"
+    t.index ["mana_type_id"], name: "index_manas_on_mana_type_id"
+  end
+
+  create_table "sales_prices", force: :cascade do |t|
+    t.string "purchasable_type"
+    t.bigint "purchasable_id"
+    t.money "fair_price", scale: 2
+    t.string "best_vendor_buy"
+    t.money "best_vendor_buy_price", scale: 2
+    t.money "lowest_price", scale: 2
+    t.integer "quantity", default: 0
+    t.integer "count_for_trade", default: 0
+    t.string "full_image_url"
+    t.string "url"
+    t.string "absolute_change_since_yesterday"
+    t.string "absolute_change_since_one_week_ago"
+    t.string "percentage_change_since_yesterday"
+    t.string "percentage_change_since_one_week_ago"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["purchasable_type", "purchasable_id"], name: "index_sales_prices_on_purchasable_type_and_purchasable_id"
+  end
+
   create_table "sources", force: :cascade do |t|
     t.string "name"
     t.string "line"
     t.string "filename"
     t.string "git_sha"
-    t.string "sourceable_id"
+    t.integer "sourceable_id"
     t.string "sourceable_type"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
@@ -103,4 +139,5 @@ ActiveRecord::Schema.define(version: 20170903065810) do
   add_foreign_key "card_abilities", "cards"
   add_foreign_key "expansion_cards", "cards"
   add_foreign_key "expansion_cards", "expansion_sets"
+  add_foreign_key "manas", "mana_types"
 end
