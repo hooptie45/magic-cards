@@ -3,25 +3,30 @@ options:
   verbose: true
 syncs:
   website-sync: &sync
-    src: '~/Projects/magic-card'
+    src: '~/Projects/magic-cards'
     notify_terminal: true
     sync_excludes:
-      - Name .docker-sync
       - Name log
+      - Name target
+      - Name ivy
+      - Name .git
       - 'Regex .*\.log'
       - 'Regex \.#.*'
     sync_excludes_type: none
     watch_excludes:
       - Name .docker-sync
+      - Name .git
       - Name log
       - 'Regex .*\.log'
       - 'Regex .#.*'
     watch_excludes_type: none
 
   cable-sync:
-    src: '~/Projects/magic-card'
+    src: '~/Projects/magic-cards'
     <<: *sync
 
   sidekiq-sync:
-    src: '~/Projects/magic-card'
+    src: '~/Projects/magic-cards'
     <<: *sync
+
+

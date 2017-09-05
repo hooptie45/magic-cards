@@ -8,6 +8,5 @@ docker volume ls  | grep cable-sync   || docker volume create --name=cable-sync
 docker network ls | grep backend      || docker network create  -d bridge backend
 docker network ls | grep frontend     || docker network create -d bridge frontend
 
-
 script/docker/run run --rm website bundle exec rake db:reset db:seed
 

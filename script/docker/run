@@ -3,10 +3,5 @@
 set -eo pipefail
 
 
-docker-compose -f ~/Projects/magic-cards/docker-compose-backend.yml \
-               -f ~/Projects/magic-cards/docker-compose.yml \
-               run --rm sidekiq script/update
-
-docker-compose -f ~/Projects/magic-cards/docker-compose-backend.yml \
-               -f ~/Projects/magic-cards/docker-compose.yml \
+docker-compose -f ~/Projects/magic-cards/docker-compose.yml \
                "$@"

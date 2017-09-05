@@ -2,8 +2,12 @@
 
 docker build \
        --no-cache \
-       -t magic-cards:dev \
+       -t magic-cards-website \
        -f script/docker/Dockerfile .
-script/docker/run up --build --force-recreate -d
-script/docker/run down
+docker build \
+       -t magic-cards-sidekiq \
+       -f script/docker/Dockerfile .
+docker build \
+       -t magic-cards-cable \
+       -f script/docker/Dockerfile .
 

@@ -16,7 +16,7 @@ module MagicCards
 
     # Set up logging to be the same in all environments but control the level
     # through an environment variable.
-    config.log_level = ENV['LOG_LEVEL']
+    config.log_level = ENV.fetch('LOG_LEVEL', 'DEBUG').upcase
 
     # Log to STDOUT because Docker expects all processes to log here. You could
     # then redirect logs to a third party service on your own such as systemd,

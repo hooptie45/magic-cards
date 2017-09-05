@@ -1,5 +1,1 @@
 #!/usr/bin/env sh
-
-script/bootstrap
-
-bundle check || bundle install --path /app/vendor/bundle

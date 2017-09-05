@@ -3,5 +3,7 @@
 set -eo pipefail
 
 script/docker/run run --rm website script/bootstrap
+script/docker/run run --rm sidekiq script/bootstrap
+script/docker/run run --rm cable script/bootstrap
 
 

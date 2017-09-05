@@ -3,11 +3,11 @@ version: '2'
 services:
 
   sidekiq:
-    image: magic-cards:dev
+    image: magic-cards-sidekiq
     networks:
       - backend
       - default
-    external_links:
+    links:
       - postgres:postgres
       - redis:redis
     command: script/sidekiq
@@ -16,11 +16,11 @@ services:
     env_file:
       - '.env'
   website:
-    image: magic-cards:dev
+    image: magic-cards-website
     networks:
       - backend
       - default
-    external_links:
+    links:
       - postgres:postgres
       - redis:redis
     command: script/server
@@ -28,21 +28,93 @@ services:
       - 'website-sync:/app:nocopy'
     ports:
       - '3000:3000'
+    env_file:
+      - '.env'
 
   cable:
-    image: magic-cards:dev
+    image: magic-cards-cable
     networks:
       - backend
       - default
-    external_links:
+    links:
       - postgres:postgres
       - redis:redis
     command: script/cable
-    image: magic-cards:dev
     ports:
       - '28080:28080'
     volumes:
       - 'cable-sync:/app:nocopy'
+    env_file:
+      - '.env'
+
+  postgres:
+    container_name: postgres
+    image: 'postgres:9.6-alpine'
+    environment:
+      POSTGRES_USER: 'magic_cards'
+      POSTGRES_PASSWORD: 'yourpassword'
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'postgres_db:/var/lib/postgresql/data:nocopy'
+    networks:
+      - backend
+
+  redis:
+    container_name: redis
+    image: 'redis:3.2-alpine'
+    command: redis-server --requirepass yourpassword
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis:/data'
+    networks:
+      - backend
+
+  kafka:
+    container_name: kafka
+    image: jeqo/apache-kafka:0.10.1.0-2.11
+    links:
+      - zookeeper
+    networks:
+      - backend
+
+  zookeeper:
+    logging:
+      driver: "none"
+    image: jeqo/apache-zookeeper:3.4.8
+    container_name: zookeeper
+    restart: always
+    networks:
+      - backend
+
+  nimbus:
+    image: storm
+    container_name: nimbus
+    command: storm nimbus
+    depends_on:
+      - zookeeper
+    links:
+      - zookeeper
+    restart: always
+    ports:
+      - 6627:6627
+    networks:
+      - backend
+
+  supervisor:
+    image: storm
+    container_name: supervisor
+    command: storm supervisor
+    depends_on:
+      - nimbus
+      - zookeeper
+    links:
+        - nimbus
+        - zookeeper
+    restart: always
+    networks:
+      - backend
 
 volumes:
   bundle:
@@ -50,6 +122,9 @@ volumes:
     external: true
   cable-sync: *sync
   sidekiq-sync: *sync
+  redis:
+  postgres_db:
+    external: true
 
 networks:
   default:
