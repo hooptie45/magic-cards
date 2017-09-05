@@ -23,5 +23,5 @@
 .direnv
 \#*
 target/
-ivy/.docker-sync/
+.docker-sync/
 ivy/

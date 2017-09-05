@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 # Looking to use the Edge version? gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.3'
+gem 'rails'
 
 # Use Puma as the app server
 gem 'puma', '~> 3.10'
@@ -33,16 +33,17 @@ gem 'uglifier', '>= 1.3.0'
 
 # Use jQuery as the JavaScript library
 gem 'jquery-rails', '~> 4.3'
-
+gem 'nokogiri'
 # Use Turbolinks. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 
 # Use Bootstrap SASS for Bootstrap support
 gem 'bootstrap-sass', '~> 3.3'
-
 # Use Font Awesome Rails for Font Awesome icons
 gem 'font-awesome-rails', '~> 4.7'
 gem 'haml'
+
+
 gem 'ruby-kafka'
 gem 'graphql'
 gem 'graphql-batch'
@@ -60,16 +61,12 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'pry'
   gem 'pry-rails'
-  # End to end testing of your rails apps (Rails 5.1+ supports this)
-  # gem 'capybara', '~> 2.13'
   # gem 'selenium-webdriver'
 end
 
 group :development do
   # Enable a debug toolbar to help profile your application
   gem 'rack-mini-profiler', '~> 0.10'
-  gem 'commands'
-
   # Access an IRB console on exception pages or by using <%= console %>
   gem 'web-console', '~> 3.3.0'
 

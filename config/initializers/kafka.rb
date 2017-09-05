@@ -1,3 +1,5 @@
+require 'kafka'
+
 ::KAFKA = Kafka.new(
   seed_brokers: ENV.fetch("KAFKA_SEED_BROKERS", "localhost:9092,kafka:9092").split(","),
   logger: Rails.logger
