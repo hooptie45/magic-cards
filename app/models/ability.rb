@@ -1,9 +1,7 @@
 class Ability < ApplicationRecord
-  has_many :card_abilities
-  has_many :cards, :through => :card_abilities
-  has_many :sources, :as => :sourceable
+  belongs_to :targetable, polymorphic: true
 
-  
+  has_many :manas, as: :mana_targetable, extend: ManaAssociation
 
   def derive_mana!
     raw_mana_flags = String(cost).split("$")

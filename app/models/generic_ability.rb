@@ -1,0 +1,3 @@
+class GenericAbility < Ability
+
+end

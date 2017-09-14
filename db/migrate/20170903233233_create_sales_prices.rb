@@ -3,11 +3,13 @@ class CreateSalesPrices < ActiveRecord::Migration[5.1]
     create_table :sales_prices do |t|
       t.references :purchasable, polymorphic: true, index: true
 
-      t.money :fair_price
+      t.decimal :fair_price,
+                :buy_vendor_price,
+                :sell_vendor_price,
+                :precision => 8, :scale => 2
 
-      t.string :best_vendor_buy
-      t.money :best_vendor_buy_price
-      t.money :lowest_price
+      t.string :sell_vendor
+      t.string :buy_vendor
 
       t.integer :quantity, default: 0
       t.integer :count_for_trade, default: 0
@@ -15,10 +17,10 @@ class CreateSalesPrices < ActiveRecord::Migration[5.1]
       t.string :full_image_url
       t.string :url
 
-      t.string :absolute_change_since_yesterday,
-               :absolute_change_since_one_week_ago,
-               :percentage_change_since_yesterday,
-               :percentage_change_since_one_week_ago
+      t.float :absolute_change_since_yesterday,
+              :absolute_change_since_one_week_ago,
+              :percentage_change_since_yesterday,
+              :percentage_change_since_one_week_ago
 
       t.datetime :deleted_at
 

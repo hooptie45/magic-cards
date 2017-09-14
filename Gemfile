@@ -47,7 +47,10 @@ gem 'haml'
 gem 'ruby-kafka'
 gem 'graphql'
 gem 'graphql-batch'
-
+gem 'bulk_insert'
+gem 'seed_dump'
+gem 'sidekiq-unique-jobs'
+gem 'acts-as-taggable-on'
 group :test do
   gem 'guard'
   gem 'guard-rspec'

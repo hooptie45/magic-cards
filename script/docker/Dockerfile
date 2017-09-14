@@ -1,6 +1,6 @@
 FROM ruby:2.4-alpine
 
-RUN apk update && apk add build-base nodejs postgresql-dev bash
+RUN apk update && apk add build-base nodejs postgresql-dev bash git ack
 VOLUME /app
 WORKDIR /app
 COPY Gemfile Gemfile.lock ./
