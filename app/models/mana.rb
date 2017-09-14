@@ -1,6 +1,9 @@
 class Mana < ApplicationRecord
   belongs_to :mana_type
   belongs_to :mana_targetable, polymorphic: true
+  default_scope -> {
+    includes(:mana_type)
+  }
 
   scope :find_mana_type, ->(type) { joins(:mana_type).where(mana_type: type) }
 

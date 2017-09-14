@@ -25,3 +25,5 @@
 target/
 .docker-sync/
 ivy/
+\.#*
+.docker-sync/

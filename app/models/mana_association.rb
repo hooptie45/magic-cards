@@ -1,4 +1,8 @@
 module ManaAssociation
+  def total_cost
+    joins(:mana_type).sum(:cost)
+  end
+
   def add_black
     add_mana(:black)
   end
@@ -19,11 +23,17 @@ module ManaAssociation
     add_mana(:white)
   end
 
-  def add_colorless
-    build(mana_type: ManaType.colorless.first)
+  def add_colorless(cost)
+    fetch_method = "fetch_#{cost}"
+    if ManaType.respond_to?(fetch_method)
+      create(mana_type: ManaType.public_send(fetch_method))
+    else
+      Rails.logger.
+        error("Skipping colorless mana: #{cost} on #{self}. Not Yet Implemented")
+    end
   end
 
   def add_mana(color_name)
-    build(mana_type: ManaType.public_send(color_name).first)
+    create(mana_type: ManaType.public_send("fetch_#{color_name}"))
   end
 end

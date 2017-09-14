@@ -1,0 +1,2 @@
+module Abilities::Common
+end

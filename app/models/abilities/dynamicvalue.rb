@@ -1,0 +1,2 @@
+module Abilities::Dynamicvalue
+end

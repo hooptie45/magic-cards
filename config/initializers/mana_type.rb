@@ -1,0 +1,1 @@
+ManaType.setup!

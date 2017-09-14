@@ -10,10 +10,12 @@ syncs:
       - Name target
       - Name ivy
       - Name .git
+      - Name miniprofiler
       - 'Regex .*\.log'
       - 'Regex \.#.*'
     sync_excludes_type: none
     watch_excludes:
+      - Name miniprofiler
       - Name .docker-sync
       - Name .git
       - Name log

@@ -15,13 +15,41 @@ class ManaType < ApplicationRecord
   COST_REGEX_RED   = Regexp.new(CODE_RED)
   COST_REGEX_WHITE = Regexp.new(CODE_WHITE)
 
-  scope :code, ->(code) { where(code: code) }
+  scope :code, ->(code) { where(id: code) }
 
-  scope :colorless,-> { code(CODE_COLORLESS) }
+  scope :colorless, ->(colorless_cost = nil) { code(colorless_cost || CODE_COLORLESS) }
   scope :black, -> { code(CODE_BLACK) }
   scope :blue,  -> { code(CODE_BLUE) }
   scope :green, -> { code(CODE_GREEN) }
   scope :red,   -> { code(CODE_RED) }
   scope :white, -> { code(CODE_WHITE) }
 
+
+  scope :black, -> { code(CODE_BLACK) }
+  scope :blue,  -> { code(CODE_BLUE) }
+  scope :green, -> { code(CODE_GREEN) }
+  scope :red,   -> { code(CODE_RED) }
+  scope :white, -> { code(CODE_WHITE) }
+
+  def self.setup!
+    Array(1..20).each do |colorless_cost|
+      colorless(colorless_cost).first_or_create(name: :colorless,
+                                                cost: colorless_cost)
+
+      define_singleton_method("fetch_#{colorless_cost}") do
+        Rails.cache.fetch "mana_type/colorless_#{colorless_cost}" do
+          colorless(colorless_cost).first
+        end
+      end
+    end
+
+    %w(black blue green red white).each do |color|
+      public_send(color).first_or_create(name: color)
+      define_singleton_method("fetch_#{color}") do
+        Rails.cache.fetch "mana_type/#{color}" do
+          public_send(color).first
+        end
+      end
+    end
+  end
 end
