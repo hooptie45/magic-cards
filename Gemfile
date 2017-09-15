@@ -43,7 +43,7 @@ gem 'bootstrap-sass', '~> 3.3'
 gem 'font-awesome-rails', '~> 4.7'
 gem 'haml'
 
-
+gem 'graphiql-rails'
 gem 'ruby-kafka'
 gem 'graphql'
 gem 'graphql-batch'
@@ -51,9 +51,12 @@ gem 'bulk_insert'
 gem 'seed_dump'
 gem 'sidekiq-unique-jobs'
 gem 'acts-as-taggable-on'
+
 group :test do
   gem 'guard'
   gem 'guard-rspec'
+  gem 'rspec'
+  gem 'rspec-given'
 end
 
 group :development, :test do
@@ -68,12 +71,7 @@ group :development, :test do
 end
 
 group :development do
-  # Enable a debug toolbar to help profile your application
-  gem 'rack-mini-profiler', '~> 0.10'
   # Access an IRB console on exception pages or by using <%= console %>
-  gem 'web-console', '~> 3.3.0'
-
-  # Get notified of file changes. Read more: https://github.com/guard/listen
   gem 'listen', '>= 3.0.5', '< 3.2'
 
   # Use Spring. Read more: https://github.com/rails/spring
@@ -83,3 +81,4 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data'
+

@@ -61,7 +61,7 @@ services:
       - backend
 
   redis:
-    container_name: redis
+    container_name: magic-cards-redis
     image: 'redis:3.2-alpine'
     command: redis-server --requirepass yourpassword
     ports:
@@ -70,52 +70,52 @@ services:
       - 'redis:/data'
     networks:
       - backend
-
-  kafka:
-    container_name: kafka
-    image: jeqo/apache-kafka:0.10.1.0-2.11
-    links:
-      - zookeeper
-    networks:
-      - backend
-
-  zookeeper:
-    logging:
-      driver: "none"
-    image: jeqo/apache-zookeeper:3.4.8
-    container_name: zookeeper
-    restart: always
-    networks:
-      - backend
-
-  nimbus:
-    image: storm
-    container_name: nimbus
-    command: storm nimbus
-    depends_on:
-      - zookeeper
-    links:
-      - zookeeper
-    restart: always
-    ports:
-      - 6627:6627
-    networks:
-      - backend
-
-  supervisor:
-    image: storm
-    container_name: supervisor
-    command: storm supervisor
-    depends_on:
-      - nimbus
-      - zookeeper
-    links:
-        - nimbus
-        - zookeeper
-    restart: always
-    networks:
-      - backend
-
+#
+#   kafka:
+#     container_name: kafka
+#     image: jeqo/apache-kafka:0.10.1.0-2.11
+#     links:
+#       - zookeeper
+#     networks:
+#       - backend
+#
+#   zookeeper:
+#     logging:
+#       driver: "none"
+#     image: jeqo/apache-zookeeper:3.4.8
+#     container_name: zookeeper
+#     restart: always
+#     networks:
+#       - backend
+#
+#   nimbus:
+#     image: storm
+#     container_name: nimbus
+#     command: storm nimbus
+#     depends_on:
+#       - zookeeper
+#     links:
+#       - zookeeper
+#     restart: always
+#     ports:
+#       - 6627:6627
+#     networks:
+#       - backend
+#
+#   supervisor:
+#     image: storm
+#     container_name: supervisor
+#     command: storm supervisor
+#     depends_on:
+#       - nimbus
+#       - zookeeper
+#     links:
+#         - nimbus
+#         - zookeeper
+#     restart: always
+#     networks:
+#       - backend
+#
 volumes:
   bundle:
   website-sync: &sync

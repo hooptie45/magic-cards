@@ -1,7 +1,6 @@
 require 'hashie'
 
-class IngestXmageDumpJob < ApplicationJob
-
+class IngestXmageDumpJob
   def perform(pathname)
     Pathname(pathname).open do |f|
       json = JSON.load(f.read)

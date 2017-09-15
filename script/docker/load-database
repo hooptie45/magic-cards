@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+script/docker/run run --rm -v $(pwd):/app bash -c "pg_restore --verbose --username $DB_USER --clean --no-owner --no-acl --dbname $DB_NAME /app/db/data.dump"

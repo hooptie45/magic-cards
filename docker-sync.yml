@@ -10,7 +10,8 @@ syncs:
       - Name target
       - Name ivy
       - Name .git
-      - Name miniprofiler
+      - Name tmp/miniprofiler
+      - Name tmp/xmage
       - 'Regex .*\.log'
       - 'Regex \.#.*'
     sync_excludes_type: none
@@ -19,6 +20,8 @@ syncs:
       - Name .docker-sync
       - Name .git
       - Name log
+      - Name tmp/miniprofiler
+      - Name tmp/xmage
       - 'Regex .*\.log'
       - 'Regex .#.*'
     watch_excludes_type: none

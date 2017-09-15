@@ -1,2 +1,0 @@
-module Abilities::Decorator
-end
