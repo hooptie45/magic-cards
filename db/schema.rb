@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914053327) do
+ActiveRecord::Schema.define(version: 20170915050737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,13 +22,16 @@ ActiveRecord::Schema.define(version: 20170914053327) do
     t.json "metadata", default: "{}"
     t.string "sourceable_type"
     t.bigint "sourceable_id"
-    t.string "targetable_type"
-    t.bigint "targetable_id"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description"
     t.index ["sourceable_type", "sourceable_id"], name: "index_abilities_on_sourceable_type_and_sourceable_id"
-    t.index ["targetable_type", "targetable_id"], name: "index_abilities_on_targetable_type_and_targetable_id"
+  end
+
+  create_table "abilities_cards", id: false, force: :cascade do |t|
+    t.bigint "card_id", null: false
+    t.bigint "ability_id", null: false
   end
 
   create_table "ability_types", force: :cascade do |t|

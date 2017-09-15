@@ -8,7 +8,7 @@ class ApplicationJob
   end
 
   def self.perform_later(*args, **kwargs)
-    perform_async(*args, **kwargs)
+    perform_async(*args)
   end
 
 end

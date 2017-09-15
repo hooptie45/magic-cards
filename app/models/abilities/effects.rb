@@ -1,2 +1,0 @@
-module Abilities::Effects
-end

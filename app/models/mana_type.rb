@@ -15,6 +15,13 @@ class ManaType < ApplicationRecord
   COST_REGEX_RED   = Regexp.new(CODE_RED)
   COST_REGEX_WHITE = Regexp.new(CODE_WHITE)
 
+  ABILITY_COST_REGEX_COLORLESS = Regexp.new(%Q[{([1-9]{1,2})}])
+  ABILITY_COST_REGEX_BLACK = Regexp.new(%Q[{(#{ManaType::CODE_BLACK})}])
+  ABILITY_COST_REGEX_BLUE  = Regexp.new(%Q[{(#{ManaType::CODE_BLUE})}])
+  ABILITY_COST_REGEX_GREEN = Regexp.new(%Q[{(#{ManaType::CODE_GREEN})}])
+  ABILITY_COST_REGEX_RED   = Regexp.new(%Q[{(#{ManaType::CODE_RED})}])
+  ABILITY_COST_REGEX_WHITE = Regexp.new(%Q[{(#{ManaType::CODE_WHITE})}])
+
   scope :code, ->(code) { where(id: code) }
 
   scope :colorless, ->(colorless_cost = nil) { code(colorless_cost || CODE_COLORLESS) }
