@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 
 docker build \
+       --no-cache \
+       --pull \
        -t magic-cards-website \
        -f script/docker/Dockerfile .
 docker build \

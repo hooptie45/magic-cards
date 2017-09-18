@@ -12,7 +12,7 @@ services:
       - redis:redis
     command: script/sidekiq
     volumes:
-      - 'sidekiq-sync:/app:nocopy'
+      - 'magic-cards-sidekiq-sync:/app:nocopy'
     env_file:
       - '.env'
   website:
@@ -25,7 +25,7 @@ services:
       - redis:redis
     command: script/server
     volumes:
-      - 'website-sync:/app:nocopy'
+      - 'magic-cards-website-sync:/app:nocopy'
     ports:
       - '3000:3000'
     env_file:
@@ -43,7 +43,7 @@ services:
     ports:
       - '28080:28080'
     volumes:
-      - 'cable-sync:/app:nocopy'
+      - 'magic-cards-cable-sync:/app:nocopy'
     env_file:
       - '.env'
 
@@ -118,10 +118,10 @@ services:
 #
 volumes:
   bundle:
-  website-sync: &sync
+  magic-cards-website-sync: &sync
     external: true
-  cable-sync: *sync
-  sidekiq-sync: *sync
+  magic-cards-cable-sync: *sync
+  magic-cards-sidekiq-sync: *sync
   redis:
   postgres_db:
     external: true

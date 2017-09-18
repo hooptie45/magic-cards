@@ -2,10 +2,11 @@ version: "2"
 options:
   verbose: true
 syncs:
-  website-sync: &sync
+  magic-cards-website-sync: &sync
     src: '~/Projects/magic-cards'
     notify_terminal: true
     sync_excludes:
+      - Name .docker-sync
       - Name log
       - Name target
       - Name ivy
@@ -26,11 +27,11 @@ syncs:
       - 'Regex .#.*'
     watch_excludes_type: none
 
-  cable-sync:
+  magic-cards-cable-sync:
     src: '~/Projects/magic-cards'
     <<: *sync
 
-  sidekiq-sync:
+  magic-cards-sidekiq-sync:
     src: '~/Projects/magic-cards'
     <<: *sync
 

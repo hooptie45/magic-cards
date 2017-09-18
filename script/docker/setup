@@ -2,13 +2,13 @@
 set -eo pipefail
 
 docker volume ls  | grep postgres_db  || docker volume create --name=postgres_db
-docker volume ls  | grep website-sync || docker volume create --name=website-sync
-docker volume ls  | grep sidekiq-sync || docker volume create --name=sidekiq-sync
-docker volume ls  | grep cable-sync   || docker volume create --name=cable-sync
+docker volume ls  | grep magic-cards-website-sync || docker volume create --name=magic-cards-website-sync
+docker volume ls  | grep magic-cards-sidekiq-sync || docker volume create --name=magic-cards-sidekiq-sync
+docker volume ls  | grep magic-cards-cable-sync   || docker volume create --name=magic-cards-cable-sync
 docker network ls | grep backend      || docker network create  -d bridge backend
 docker network ls | grep frontend     || docker network create -d bridge frontend
 
-# script/docker/build #
+script/docker/build #
 
 script/docker/bootstrap
 
