@@ -9,7 +9,7 @@ Types::QueryType = GraphQL::ObjectType.define do
     type types[Types::CardType]
     argument :with_abilities, types[Types::AbilityTypeEnum]
     argument :without_abilities, types[Types::AbilityTypeEnum]
-    argument :with_all_abilities, types[Types::CardTypeEnum]
+    argument :with_all_abilities, types[Types::AbilityTypeEnum]
 
     argument :with_types, types[Types::CardTypeEnum]
     argument :without_types, types[Types::CardTypeEnum]
