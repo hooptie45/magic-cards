@@ -10,7 +10,9 @@ class Card < ApplicationRecord
   scope :artifact, -> { where(card_type: "Artifact") }
   scope :creature, -> { where(card_type: "Creature") }
   scope :instant, -> { where(card_type: "Instant") }
-
+  scope :search_by_name, ->(name) {
+    where(["name ILIKE ?", "%#{name}%"])
+  }
   scope :with_ability, ->(name) {
     ActsAsTaggableOn::Tag.where(["name LIKE n#"])
   }
