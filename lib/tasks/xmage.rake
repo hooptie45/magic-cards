@@ -1,8 +1,9 @@
 namespace :xmage do
-  XMAGE_REPO_PATH = Pathname("/app/tmp/xmage")
-  XMAGE_ABILITIES_PATH = Pathname("/app/data/abilities.txt")
-  XMAGE_ABILITY_TYPES_PATH = Pathname("/app/data/ability-types.txt")
-  XMAGE_ABILITY_DUMP_PATH = Pathname("/app/data/ability-dump.yml")
+  XMAGE_REPO_PATH          = Rails.root.join("tmp/xmage")
+  XMAGE_ABILITIES_PATH     = Rails.root.join("data/abilities.txt")
+  XMAGE_ABILITY_TYPES_PATH = Rails.root.join("data/ability-types.txt")
+  XMAGE_ABILITY_DUMP_PATH  = Rails.root.join("data/ability-dump.yml")
+
   MODELS_PATH = Rails.root.join("app", "models")
   ABILITY_MODELS_PATH = MODELS_PATH.join("abilities")
   ABILITIES_LINE_REGEX = /(\w)\/(\w+).java:(\d+):\s?import mage\.(.*)\.(\w+);$/
@@ -69,6 +70,8 @@ namespace :xmage do
 
   desc "update tag counts"
   task :update_tag_counts => [:environment] do |t, args|
+    ActsAsTaggableOn.tags_counter = true
+
     ActsAsTaggableOn::Tag.pluck(:id).each do |id|
       begin
         ActsAsTaggableOn::Tag.reset_counters(id, :taggings)
@@ -92,16 +95,5 @@ namespace :xmage do
 
     sh("gawk '{print $2}' #{XMAGE_ABILITIES_PATH} | sort | uniq -c | sort -n > #{XMAGE_ABILITY_TYPES_PATH}")
     Rake::Task["xmage:add_abilities"].invoke
-
-    # XMAGE_ABILITY_TYPES_PATH.open do |f|                                                 #
-    #   f.each do |line|                                                                   #
-    #     count, type = line.squish.split(" ")                                             #
-    #     type = type.sub(/^mage\./, '').sub(";", "")                                      #
-    #     next if type.end_with?("Impl")                                                   #
-    #     ruby_model = type.gsub(".", "/")                                                 #
-    #     ruby_class = ruby_model.split("/").last                                          #
-    #     sh("rails generate model #{ruby_model} --no-migration --parent=Ability --force") #
-    #   end                                                                                #
-    # end                                                                                  #
   end
 end
