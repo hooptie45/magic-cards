@@ -5,7 +5,21 @@ Types::QueryType = GraphQL::ObjectType.define do
     resolve -> (args, ctx, env){ ManaType.all }
   end
 
+  field :card do
+    name "Card"
+    type Types::CardType
+    argument :id, !types.String
+
+    resolve ->(obj, args, ctx) {
+      if id = args[:id]
+        resp = ScryfallClient.new.fetch("/cards/#{id}")
+        Hashie::Mash.new(resp.body)
+      end
+    }
+  end
+
   field :cards do
+    name "Cards"
     type types[Types::CardType]
 
     argument :keywords, types.String
@@ -24,7 +38,21 @@ Types::QueryType = GraphQL::ObjectType.define do
 
     resolve -> (obj, args, env) {
       scope = Card
-      scope = scope.search_by_name(args[:keywords]) if args[:keywords].present?
+      query = {
+        query: {
+          bool: {
+            should: [
+              {
+                query_string: {
+                  default_field: "_all",
+                  query: "#{args[:keywords]}"
+                }
+              }
+            ]
+          }
+        }
+      }
+      scope = scope.search(query) if args[:keywords].present?
 
       scope = scope.tagged_with(args[:without_types],      :on => :card_types,   :exclude => true)   if args[:without_types].present?
       scope = scope.tagged_with(args[:with_types],         :on => :card_types,   :any => true)       if args[:with_types].present?

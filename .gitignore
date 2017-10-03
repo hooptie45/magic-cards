@@ -26,4 +26,4 @@ target/
 .docker-sync/
 ivy/
 \.#*
-.docker-sync/
+.docker-sync/.rvmrc

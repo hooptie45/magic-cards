@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170919230455) do
+ActiveRecord::Schema.define(version: 20170924053553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,10 @@ ActiveRecord::Schema.define(version: 20170919230455) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
+    t.string "timing"
+    t.string "rule"
+    t.string "zone"
+    t.string "ability_type"
     t.index ["sourceable_type", "sourceable_id"], name: "index_abilities_on_sourceable_type_and_sourceable_id"
   end
 
@@ -40,8 +44,19 @@ ActiveRecord::Schema.define(version: 20170919230455) do
     t.json "metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "mana", default: [], array: true
+    t.json "costs", default: [], array: true
+    t.string "rule"
     t.index ["ability_id"], name: "index_ability_cards_on_ability_id"
     t.index ["card_id"], name: "index_ability_cards_on_card_id"
+  end
+
+  create_table "ability_effects", force: :cascade do |t|
+    t.json "metadata", default: {}
+    t.bigint "ability_id"
+    t.bigint "effect_id"
+    t.index ["ability_id"], name: "index_ability_effects_on_ability_id"
+    t.index ["effect_id"], name: "index_ability_effects_on_effect_id"
   end
 
   create_table "ability_types", force: :cascade do |t|
@@ -51,6 +66,20 @@ ActiveRecord::Schema.define(version: 20170919230455) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["ability_id"], name: "index_ability_types_on_ability_id"
+  end
+
+  create_table "card_symbols", force: :cascade do |t|
+    t.string "symbol"
+    t.string "loose_variant"
+    t.string "english"
+    t.boolean "transposable"
+    t.boolean "represents_mana"
+    t.boolean "appears_in_mana_costs"
+    t.string "cmc"
+    t.boolean "funny"
+    t.string "colors"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "cards", id: :serial, force: :cascade do |t|
@@ -76,9 +105,32 @@ ActiveRecord::Schema.define(version: 20170919230455) do
     t.index ["xmage_card_id"], name: "index_cards_on_xmage_card_id"
   end
 
+  create_table "catalog_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "catalogs", force: :cascade do |t|
+    t.bigint "catalog_type_id"
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["catalog_type_id"], name: "index_catalogs_on_catalog_type_id"
+  end
+
   create_table "combos", force: :cascade do |t|
     t.string "name"
     t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "effects", force: :cascade do |t|
+    t.string "xmage_class"
+    t.string "values"
+    t.string "outcome"
+    t.string "effect_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -102,6 +154,81 @@ ActiveRecord::Schema.define(version: 20170919230455) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["id", "name"], name: "index_expansion_sets_on_id_and_name", unique: true
+  end
+
+  create_table "magic_cards", force: :cascade do |t|
+    t.string "scryfall_id"
+    t.string "all_parts"
+    t.string "artist"
+    t.string "border_color"
+    t.string "card_faces"
+    t.string "cmc"
+    t.string "collector_number"
+    t.string "color_identity"
+    t.string "color_indicator"
+    t.string "colors"
+    t.string "colorshifted"
+    t.string "digital"
+    t.string "edhrec_rank"
+    t.string "flavor_text"
+    t.string "frame"
+    t.string "full_art"
+    t.string "futureshifted"
+    t.string "hand_modifier"
+    t.string "highres_image"
+    t.string "image_uris"
+    t.string "layout"
+    t.string "legalities"
+    t.string "life_modifier"
+    t.string "loyalty"
+    t.string "mana_cost"
+    t.string "mtgo_id"
+    t.string "multiverse_ids"
+    t.string "name"
+    t.string "oracle_text"
+    t.string "power"
+    t.string "prints_search_uri"
+    t.string "rarity"
+    t.string "reprint"
+    t.string "reserved"
+    t.string "scryfall_set_uri"
+    t.string "scryfall_uri"
+    t.string "set"
+    t.string "set_setch_uri"
+    t.string "story_spotlight_number"
+    t.string "story_spotlight_uri"
+    t.string "timeshifted"
+    t.string "toughness"
+    t.string "type_line"
+    t.string "uri"
+    t.string "watermark"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "magic_meta_data_catalogs", force: :cascade do |t|
+    t.bigint "catalog_type_id"
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["catalog_type_id"], name: "index_magic_meta_data_catalogs_on_catalog_type_id"
+  end
+
+  create_table "magic_sets", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.string "set_type"
+    t.date "released_at"
+    t.string "block_code"
+    t.string "block"
+    t.string "parent_set_code"
+    t.integer "card_count"
+    t.boolean "digital"
+    t.boolean "foil"
+    t.string "icon_svg_uri"
+    t.string "search_uri"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "mana_types", id: :string, force: :cascade do |t|
@@ -196,9 +323,13 @@ ActiveRecord::Schema.define(version: 20170919230455) do
 
   add_foreign_key "ability_cards", "abilities", on_update: :cascade, on_delete: :cascade
   add_foreign_key "ability_cards", "cards", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "ability_effects", "abilities", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "ability_effects", "effects", on_update: :cascade, on_delete: :cascade
   add_foreign_key "ability_types", "abilities", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "catalogs", "catalog_types"
   add_foreign_key "expansion_cards", "cards", on_update: :cascade, on_delete: :cascade
   add_foreign_key "expansion_cards", "expansion_sets", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "magic_meta_data_catalogs", "catalog_types"
   add_foreign_key "manas", "mana_types", on_update: :cascade, on_delete: :cascade
   add_foreign_key "meta_ability_cards", "abilities", on_update: :cascade, on_delete: :cascade
   add_foreign_key "meta_ability_cards", "cards", on_update: :cascade, on_delete: :cascade

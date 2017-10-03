@@ -1,7 +1,9 @@
 Types::AbilityTypeEnum = GraphQL::EnumType.define do
   name "AbilityTypeEnum"
 
-  ActsAsTaggableOn::Tag.for_context(:ability_tags).each do |tag|
-    value(Ability.sanitized_name(tag.name), tag.name, value: tag.name)
+  value :flying, "Creature has flying", value: "flying"
+  Ability.group(:name).count.each do |ability, count|
+    next unless ability.present?
+    value(ability, ability, value: ability)
   end
 end

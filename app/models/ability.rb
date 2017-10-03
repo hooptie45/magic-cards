@@ -1,7 +1,30 @@
+# == Schema Information
+#
+# Table name: abilities
+#
+#  id              :integer          not null, primary key
+#  name            :string
+#  type            :string
+#  classification  :string
+#  metadata        :json
+#  sourceable_type :string
+#  sourceable_id   :integer
+#  deleted_at      :datetime
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  description     :string
+#  timing          :string
+#  rule            :string
+#  zone            :string
+#  ability_type    :string
+#
 class Ability < ApplicationRecord
   has_many :manas, as: :mana_targetable, extend: ManaAssociation
   has_many :ability_cards
   has_many :cards, :through => :ability_cards
+
+  has_many :ability_effects
+  has_many :effects, :through => :ability_effects
 
   has_and_belongs_to_many :meta_abilities
 

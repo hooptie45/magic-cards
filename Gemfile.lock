@@ -40,6 +40,9 @@ GEM
       tzinfo (~> 1.1)
     acts-as-taggable-on (5.0.0)
       activerecord (>= 4.2.8)
+    annotate (2.7.2)
+      activerecord (>= 3.2, < 6.0)
+      rake (>= 10.4, < 13.0)
     arel (8.0.0)
     autoprefixer-rails (7.1.4)
       execjs
@@ -71,6 +74,10 @@ GEM
     execjs (2.7.0)
     faraday (0.13.1)
       multipart-post (>= 1.2, < 3)
+    faraday-http-cache (2.0.0)
+      faraday (~> 0.8)
+    faraday_middleware (0.12.2)
+      faraday (>= 0.7.4, < 1.0)
     ffi (1.9.18)
     font-awesome-rails (4.7.0.2)
       railties (>= 3.2, < 5.2)
@@ -281,12 +288,15 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on
+  annotate
   bootstrap-sass (~> 3.3)
   bulk_insert
   byebug
   elasticsearch-model
   elasticsearch-rails
   faraday
+  faraday-http-cache
+  faraday_middleware
   font-awesome-rails (~> 4.7)
   graphiql-rails
   graphql

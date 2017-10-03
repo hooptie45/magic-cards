@@ -1,3 +1,12 @@
+# == Schema Information
+#
+# Table name: mana_types
+#
+#  id   :string           not null, primary key
+#  name :string           not null
+#  cost :integer          default(1), not null
+#
+
 class ManaType < ApplicationRecord
   has_many :manas
 

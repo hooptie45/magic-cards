@@ -1,6 +1,6 @@
 Types::CardTypeEnum = GraphQL::EnumType.define do
   name "CardTypeEnum"
-  ActsAsTaggableOn::Tag.for_context(:card_types).each do |tag|
-    value(tag.name.gsub(" ", "_").camelize, tag.name, value: tag.name)
+  Card.group(:card_type).count.each do |type, count|
+    value(Ability.sanitized_name(type), type, value: type)
   end
 end

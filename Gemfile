@@ -11,9 +11,6 @@ gem 'rails'
 # Use Puma as the app server
 gem 'puma', '~> 3.10'
 
-# Use Rack Timeout. Read more: https://github.com/heroku/rack-timeout
-gem 'rack-timeout', '~> 0.4'
-
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 
@@ -50,8 +47,14 @@ gem 'bulk_insert'
 gem 'seed_dump'
 gem 'sidekiq-unique-jobs'
 gem 'acts-as-taggable-on'
+
 gem 'elasticsearch-rails'
 gem 'elasticsearch-model'
+
+gem 'faraday'
+gem 'faraday_middleware'
+gem 'faraday-http-cache'
+
 group :test do
   gem 'guard'
   gem 'guard-rspec'
@@ -73,6 +76,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %>
   gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'annotate', require: false
 
   # Use Spring. Read more: https://github.com/rails/spring
   gem 'spring'

@@ -1,0 +1,3 @@
+class CardSymbol < ApplicationRecord
+
+end
