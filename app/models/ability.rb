@@ -1,9 +1,9 @@
 class Ability < ApplicationRecord
   has_many :manas, as: :mana_targetable, extend: ManaAssociation
-  has_and_belongs_to_many :cards
+  has_many :ability_cards
+  has_many :cards, :through => :ability_cards
 
-  acts_as_taggable_on :tags, :ability_tags, :colors, :card_types,
-                      :card_sub_types, :rarities, :enhancements
+  has_and_belongs_to_many :meta_abilities
 
   def self.add_meta_ability(name, ability_tags:)
     name = sanitized_name(name)
@@ -22,29 +22,6 @@ class Ability < ApplicationRecord
     description=~ /creatures you control gets? (.*?)/
     description=~ /creatures you control gets? (.*?)/
     description=~ /creatures you control gets? (.*?)/
-  end
-
-
-  def derive!
-    if description =~ /creatures you control gets? (.*?)/
-      boost = nil
-      Rails.logger.silence do
-        self.tag_list.add("Creature-Enhancer")
-        boost = $1
-        self.enhancement_list.add($1) if boost
-      end
-      Rails.logger.info "#{self} added Creature-Enhancer #{boost}"
-      puts "#{self} added Creature-Enhancer #{boost}"
-      end
-
-    if description =~ /where X is/
-      Rails.logger.silence do
-        self.tag_list.add("Multiplier")
-      end
-      Rails.logger.info "#{self} added Multiplier"
-      puts "#{self} added Multiplier"
-    end
-    save
   end
 
   def derive_mana!
