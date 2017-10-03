@@ -1,10 +1,14 @@
 class Card < ApplicationRecord
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
   acts_as_taggable_on :tags, :ability_tags, :colors, :card_types,
                       :card_sub_types, :rarities
 
   has_many :expansion_cards
   has_many :expansion_sets, :through => :expansion_cards
   has_many :sales_prices, as: :purchasable
+
 
   scope :enchantment, -> { where(card_type: "Enchantment") }
   scope :artifact, -> { where(card_type: "Artifact") }
@@ -16,9 +20,26 @@ class Card < ApplicationRecord
   scope :with_ability, ->(name) {
     ActsAsTaggableOn::Tag.where(["name LIKE n#"])
   }
+
   has_many :manas, as: :mana_targetable, extend: ManaAssociation
 
   has_and_belongs_to_many :abilities
+
+  def mana_cost
+    manas.sum { |mana| mana.mana_type.cost }
+  end
+
+  def as_indexed_json(opts = {})
+    as_json.merge(
+      :mana_cost => mana_cost,
+      :manas => manas.includes(:mana_type).map { |mana| mana.as_json(:only => [:id]).merge(mana.mana_type.as_json) },
+      :rarities => expansion_cards.map(&:rarity).uniq,
+      :ability_tags => ability_tag_list,
+      :colors => color_list,
+      :meta_ability_tags => meta_ability_tag_list,
+      :expansion_sets => expansion_sets.map(&:id)
+    )
+  end
 
   def derive_xmage_name!
     self.xmage_name ||= self.name.scan(/[A-Za-z]+\s?/).map(&:strip).map(&:classify).join("")
@@ -82,7 +103,6 @@ class Card < ApplicationRecord
         manas.add_white
         color_list.add("white")
       end
-      save!
 
       abilities.destroy_all
 
@@ -90,6 +110,8 @@ class Card < ApplicationRecord
         ability = Ability.where(description: raw).first_or_create
         self.abilities << ability
       end
+
+      save!
 
       manas
     end

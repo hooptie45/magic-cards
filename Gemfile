@@ -50,7 +50,8 @@ gem 'bulk_insert'
 gem 'seed_dump'
 gem 'sidekiq-unique-jobs'
 gem 'acts-as-taggable-on'
-
+gem 'elasticsearch-rails'
+gem 'elasticsearch-model'
 group :test do
   gem 'guard'
   gem 'guard-rspec'
