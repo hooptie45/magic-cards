@@ -3,7 +3,8 @@ class Card < ApplicationRecord
   include Elasticsearch::Model::Callbacks
 
   acts_as_taggable_on :tags, :ability_tags, :colors, :card_types,
-                      :card_sub_types, :rarities
+                      :card_sub_types, :rarities,
+                      :meta_ability_tags
 
   has_many :expansion_cards
   has_many :expansion_sets, :through => :expansion_cards

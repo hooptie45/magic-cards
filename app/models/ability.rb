@@ -5,12 +5,17 @@ class Ability < ApplicationRecord
   acts_as_taggable_on :tags, :ability_tags, :colors, :card_types,
                       :card_sub_types, :rarities, :enhancements
 
-  def self.sanitized_name(name)
-    first, *middle, last = name.split(".")
-    [last, middle].flatten.map(&:underscore).flatten.map(&:upcase).join("_")
-  end
-  def derive_endfrom
+  def self.add_meta_ability(name, ability_tags:)
+    name = sanitized_name(name)
 
+    Card.tagged_with(ability_tags, :on => :ability_tags, :any => true).find_each do |card|
+      card.meta_ability_tag_list.add(name)
+      card.save
+    end
+  end
+
+  def self.sanitized_name(name)
+    name.split(/[.\-_ ]/).flatten.compact.map(&:underscore).flatten.map(&:upcase).join("_")
   end
 
   def watch_for(name)
