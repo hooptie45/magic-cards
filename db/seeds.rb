@@ -1,9 +1,27 @@
-ManaType.setup!
-ActsAsTaggableOn.tags_counter = false
-require_relative "seed/cards"
-Rake::Task["cards:derive_mana"].invoke
-require_relative "seed/expansion_sets"
-require_relative "seed/expansion_cards"
-Rake::Task["xmage:abilities"].invoke
-
-ActsAsTaggableOn.tags_counter = true
+ManaType.create!([
+  {name: "colorless", cost: 1},
+  {name: "colorless", cost: 2},
+  {name: "colorless", cost: 3},
+  {name: "colorless", cost: 4},
+  {name: "colorless", cost: 5},
+  {name: "colorless", cost: 6},
+  {name: "colorless", cost: 7},
+  {name: "colorless", cost: 8},
+  {name: "colorless", cost: 9},
+  {name: "colorless", cost: 10},
+  {name: "colorless", cost: 11},
+  {name: "colorless", cost: 12},
+  {name: "colorless", cost: 13},
+  {name: "colorless", cost: 14},
+  {name: "colorless", cost: 15},
+  {name: "colorless", cost: 16},
+  {name: "colorless", cost: 17},
+  {name: "colorless", cost: 18},
+  {name: "colorless", cost: 19},
+  {name: "colorless", cost: 20},
+  {name: "black", cost: 1},
+  {name: "blue", cost: 1},
+  {name: "green", cost: 1},
+  {name: "red", cost: 1},
+  {name: "white", cost: 1}
+])

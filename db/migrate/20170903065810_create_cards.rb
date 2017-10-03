@@ -30,7 +30,6 @@ class CreateCards < ActiveRecord::Migration[5.1]
         t.string :name, :index => true
         t.string :mtg_card_id, :index => true
         t.string :xmage_card_id, :index => true
-        t.string :color
         t.string :cost
         t.string :card_type
         t.string :card_sub_type

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170918032151) do
+ActiveRecord::Schema.define(version: 20170919230455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,16 @@ ActiveRecord::Schema.define(version: 20170918032151) do
   create_table "abilities_cards", id: false, force: :cascade do |t|
     t.bigint "card_id", null: false
     t.bigint "ability_id", null: false
+  end
+
+  create_table "ability_cards", force: :cascade do |t|
+    t.bigint "card_id"
+    t.bigint "ability_id"
+    t.json "metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ability_id"], name: "index_ability_cards_on_ability_id"
+    t.index ["card_id"], name: "index_ability_cards_on_card_id"
   end
 
   create_table "ability_types", force: :cascade do |t|
@@ -66,6 +76,13 @@ ActiveRecord::Schema.define(version: 20170918032151) do
     t.index ["xmage_card_id"], name: "index_cards_on_xmage_card_id"
   end
 
+  create_table "combos", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "expansion_cards", force: :cascade do |t|
     t.string "expansion_set_id"
     t.bigint "card_id"
@@ -98,6 +115,22 @@ ActiveRecord::Schema.define(version: 20170918032151) do
     t.bigint "mana_targetable_id"
     t.index ["mana_targetable_type", "mana_targetable_id"], name: "index_manas_on_mana_targetable_type_and_mana_targetable_id"
     t.index ["mana_type_id"], name: "index_manas_on_mana_type_id"
+  end
+
+  create_table "meta_abilities", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "meta_ability_cards", force: :cascade do |t|
+    t.bigint "card_id"
+    t.bigint "ability_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ability_id"], name: "index_meta_ability_cards_on_ability_id"
+    t.index ["card_id"], name: "index_meta_ability_cards_on_card_id"
   end
 
   create_table "sales_prices", force: :cascade do |t|
@@ -161,8 +194,12 @@ ActiveRecord::Schema.define(version: 20170918032151) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
+  add_foreign_key "ability_cards", "abilities", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "ability_cards", "cards", on_update: :cascade, on_delete: :cascade
   add_foreign_key "ability_types", "abilities", on_update: :cascade, on_delete: :cascade
   add_foreign_key "expansion_cards", "cards", on_update: :cascade, on_delete: :cascade
   add_foreign_key "expansion_cards", "expansion_sets", on_update: :cascade, on_delete: :cascade
   add_foreign_key "manas", "mana_types", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "meta_ability_cards", "abilities", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "meta_ability_cards", "cards", on_update: :cascade, on_delete: :cascade
 end
