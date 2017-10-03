@@ -44,7 +44,6 @@ gem 'font-awesome-rails', '~> 4.7'
 gem 'haml'
 
 gem 'graphiql-rails'
-gem 'ruby-kafka'
 gem 'graphql'
 gem 'graphql-batch'
 gem 'bulk_insert'
@@ -55,14 +54,14 @@ gem 'acts-as-taggable-on'
 group :test do
   gem 'guard'
   gem 'guard-rspec'
-  gem 'rspec'
   gem 'rspec-given'
+  gem 'rspec'
+  gem 'rspec-its'
 end
 
 group :development, :test do
   # Call 'byebug' anywhere in your code to drop into a debugger console
-  gem 'rspec'
-  gem 'rspec-its'
+
   gem 'rspec-rails'
   gem 'byebug', platform: :mri
   gem 'pry'
