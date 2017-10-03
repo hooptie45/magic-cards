@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170915050737) do
+ActiveRecord::Schema.define(version: 20170918032151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,7 +49,6 @@ ActiveRecord::Schema.define(version: 20170915050737) do
     t.string "xmage_card_id"
     t.string "color"
     t.string "cost"
-    t.json "mana", default: "{}"
     t.string "card_type"
     t.string "card_sub_type"
     t.integer "power"

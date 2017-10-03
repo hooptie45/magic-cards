@@ -32,7 +32,6 @@ class CreateCards < ActiveRecord::Migration[5.1]
         t.string :xmage_card_id, :index => true
         t.string :color
         t.string :cost
-        t.json :mana, default: '{}'
         t.string :card_type
         t.string :card_sub_type
         t.integer :power, :index => true

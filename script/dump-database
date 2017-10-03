@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+bundle exec rails db:seed:dump MODEL=Card FILE=db/seed/cards.rb
+bundle exec rails db:seed:dump MODEL=ActsAsTaggableOn::Tag,ActsAsTaggableOn::Tagging FILE=db/seed/tags.rb
+bundle exec rails db:seed:dump MODEL=ExpansionCard FILE=db/seed/expansion_cards.rb

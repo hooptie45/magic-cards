@@ -1,5 +1,3 @@
 #!/usr/bin/env sh
 
-script/docker/run run --rm sidekiq bundle exec rails db:seed:dump MODEL=Card FILE=db/seed/cards.rb
-script/docker/run run --rm sidekiq bundle exec rails db:seed:dump MODEL=ActsAsTaggableOn::Tag,ActsAsTaggableOn::Tagging FILE=db/seed/tags.rb
-script/docker/run run --rm sidekiq bundle exec rails db:seed:dump MODEL=ExpansionCard FILE=db/seed/expansion_cards.rb
+script/docker/run run --rm sidekiq script/dump-database
