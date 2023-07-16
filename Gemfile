@@ -21,7 +21,7 @@ gem 'faraday'
 gem 'redis-rails', '~> 5.0'
 
 # Use Sidekiq as a background job processor through Active Job
-gem 'sidekiq', '~> 5.0'
+gem 'sidekiq', '~> 5.2'
 gem 'hashie'
 gem 'sass-rails', '~> 5.0'
 
