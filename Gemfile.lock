@@ -131,14 +131,15 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mini_portile2 (2.2.0)
+    mini_portile2 (2.8.4)
     minitest (5.10.3)
     multi_json (1.12.2)
     multipart-post (2.0.0)
     nenv (0.3.0)
     nio4r (2.1.0)
-    nokogiri (1.8.0)
-      mini_portile2 (~> 2.2.0)
+    nokogiri (1.15.4)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     notiffany (0.1.1)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -151,12 +152,12 @@ GEM
     pry-rails (0.3.6)
       pry (>= 0.10.4)
     puma (3.10.0)
+    racc (1.7.1)
     rack (2.0.3)
     rack-protection (2.0.0)
       rack
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
-    rack-timeout (0.4.2)
     rails (5.1.4)
       actioncable (= 5.1.4)
       actionmailer (= 5.1.4)
@@ -313,7 +314,6 @@ DEPENDENCIES
   pry
   pry-rails
   puma (~> 3.10)
-  rack-timeout (~> 0.4)
   rails
   redis-rails (~> 5.0)
   rspec
